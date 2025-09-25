@@ -87,10 +87,23 @@ passwordInput.addEventListener('input', function(){
 })
 
 confirmPasswordInput.addEventListener('input', function() {
-    validateEach(confirmPasswordInput, document.getElementById('confirmPasswordError'), validateConfirmPassword)
+    validateEach(confirmPasswordInput, document.getElementById('confirmPasswordError'), validateConfirmPassword);
 })
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
 
+    const isUsernameValid = validateEach(usernameInput, document.getElementById('usernameError'), validateUsername);
+    const isEmailValid = validateEach(emailInput, document.getElementById('emailError'), validateEmail);
+    const isPasswordValid = validateEach(passwordInput, document.getElementById('passwordError'), validatePassword);
+    const isConfirmPasswordValid = validateEach(confirmPasswordInput, document.getElementById('confirmPasswordError'), validateConfirmPassword);
+
+    if (isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+        alert("You've signed up!");
+        form.requestFullscreen();
+    } else {
+        alert('Please fix form errors.')
+    }
+
 })
+
