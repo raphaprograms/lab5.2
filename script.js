@@ -13,13 +13,34 @@ window.addEventListener('load', () => {
     
 });
 
+function validateEach( inputElement, errorSpan, customValidationFunction = null) {
+    errorSpan.textContent = '';
+    inputElement.classList.remove('invalid', 'valid');
+
+    if (inputElement.required && inputElement.value.trim() === '') {
+        inputElement.setCustomValidity('This is required.');
+    } else if (customValidationFunction) {
+        customValidationFunction(inputElement);
+    } else {
+        inputElement.setCustomValidity('');
+    }
+
+    const isValid = inputElement.checkValidity();
+
+    if (!isValid) {
+        inputElement.classList.add('invalid');
+        errorSpan.textContent = inputElement.validationMessage;
+    } else {
+        inputElement.classList.add('valid');
+    }
+    return isValid;
+}
+
 function validateUsername(input) {
-    if(!input.validity.valid){
-        if (input.value.length < 5) {
-            input.setCustomValidity('Username must be 5 characters or longer.');
-        } else {
-            input.setCustomValidity('');
-        }
+    if (input.value.length < 5) {
+        input.setCustomValidity('Username must be 5 characters or longer.');
+    } else {
+        input.setCustomValidity('');
     }
 }
 
@@ -53,3 +74,23 @@ function validateConfirmPassword(input) {
     }
 }
 
+usernameInput.addEventListener('input', function(){
+    validateEach(usernameInput, document.getElementById('usernameError'), validateUsername);
+});
+
+emailInput.addEventListener('input', function(){
+    validateEach(emailInput, document.getElementById('emailError'), validateEmail);
+})
+
+passwordInput.addEventListener('input', function(){
+    validateEach(passwordInput, document.getElementById('passwordError'), validatePassword);
+})
+
+confirmPasswordInput.addEventListener('input', function() {
+    validateEach(confirmPasswordInput, document.getElementById('confirmPasswordError'), validateConfirmPassword)
+})
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+})
