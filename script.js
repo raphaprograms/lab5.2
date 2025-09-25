@@ -4,9 +4,9 @@ const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const confirmPasswordInput = document.getElementById('confirmPassword');
 
-// load username, remember to us 'savedUsername' when saving it later
+// load username, remember to use 'username' when saving it later
 window.addEventListener('load', () => {
-    const savedUsername = sessionStorage.getItem('savedUsername');
+    const savedUsername = localStorage.getItem('username');
     if (savedUsername) {
         usernameInput.value = savedUsername;
     }
@@ -99,11 +99,11 @@ form.addEventListener('submit', (event) => {
     const isConfirmPasswordValid = validateEach(confirmPasswordInput, document.getElementById('confirmPasswordError'), validateConfirmPassword);
 
     if (isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+        localStorage.setItem('username', `${usernameInput.value}`);
         alert("You've signed up!");
         form.requestFullscreen();
     } else {
         alert('Please fix form errors.')
     }
-
-})
+});
 
